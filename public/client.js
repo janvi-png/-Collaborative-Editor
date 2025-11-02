@@ -342,3 +342,4 @@ viewAllBtn.addEventListener("click", () => {
 window.addEventListener("beforeunload", () => {
   // optionally notify server (disconnect handled)
 });
+
