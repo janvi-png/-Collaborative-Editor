@@ -1,17 +1,25 @@
-// db/connect.js
 const { MongoClient } = require("mongodb");
 require("dotenv").config();
 
-const MONGO_URI = process.env.MONGO_URL;
-let dbClient = null;
-let db = null;
+const uri = process.env.MONGO_URL;
+
+let client;
+let db;
 
 async function connectDB() {
   if (db) return db;
-  dbClient = new MongoClient(MONGO_URI);
-  await dbClient.connect();
-  db = dbClient.db("collabDB");
-  console.log("✅ Connected to MongoDB (Railway)");
+
+  client = new MongoClient(uri, {
+    tls: true,
+    tlsAllowInvalidCertificates: true, // REQUIRED on Render
+    serverSelectionTimeoutMS: 15000,
+    directConnection: true, // IMPORTANT for Railway proxy
+  });
+
+  await client.connect();
+  db = client.db("collabDB");
+
+  console.log("✅ Connected to MongoDB (Railway from Render)");
   return db;
 }
 
