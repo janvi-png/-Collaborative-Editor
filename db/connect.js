@@ -1,5 +1,5 @@
+// db.js
 const { MongoClient } = require("mongodb");
-require("dotenv").config();
 
 const uri = process.env.MONGO_URL;
 
@@ -10,16 +10,13 @@ async function connectDB() {
   if (db) return db;
 
   client = new MongoClient(uri, {
-    tls: true,
-    tlsInsecure: true,
-    directConnection: true,
     serverSelectionTimeoutMS: 20000,
   });
 
   await client.connect();
-  db = client.db("collabDB");
+  db = client.db(); // uses DB name from URI
 
-  console.log("✅ MongoDB connected (Render → Railway)");
+  console.log("✅ MongoDB connected");
   return db;
 }
 
